@@ -167,11 +167,14 @@ def raw_loop(screen):
     state=env.current_state
     while not game_end:
         roll=random.randrange(1,7)
-        if(env.current_player==0): action=agent1.play(state,4)
-        if(env.current_player==1): action=agent2.play(state,4)
+        if(env.current_player==0): action=agent1.play(state,TOKENS)
+        if(env.current_player==1): action=agent2.play(state,TOKENS)
         state,r,game_end=env.step(roll,action)
         draw_board(4,state,env).refresh()
-        curses.napms(500)
+        curses.napms(30)
+    print('Player ',env.winning_player+1,' wins')
+
+
 def loop():
     curses.wrapper(raw_loop)
     return

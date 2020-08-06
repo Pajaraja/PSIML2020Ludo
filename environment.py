@@ -50,7 +50,7 @@ class Ludo(object):
             self.current_player%=self.num_players
         if self.home_state[player,action]:
             return self.current_state(), -100, terminate
-        playable=(torch.sum(self.positions[player])==-4)
+        playable=(torch.sum(self.positions[player])==-TOKENS_PER_PLAYER)
         cur=self.positions[player,action]
         if cur==-1:
             if roll==6:
@@ -70,8 +70,9 @@ class Ludo(object):
             self.board_state[self.positions[player,action]]=0
             self.positions[player,action]=-1
             self.home_state[player,action]=1
-            if torch.sum(self.home_state[player])==4:
+            if torch.sum(self.home_state[player])==TOKENS_PER_PLAYER:
                 terminate=True
+                self.winning_player=player
                 return self.current_state(),100,terminate
             return self.current_state(),0,terminate
         if (self.board_state[nxt]-1)//TOKENS_PER_PLAYER==player and not self.board_state[nxt]==0:
